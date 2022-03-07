@@ -1,0 +1,23 @@
+[
+    {"id" : 1,  
+    "columnTitle": "TO-DO",
+    "cards": [
+        {"text" : "DCOD"}
+    ]},
+    {   
+    "id" : 2,  
+    "columnTitle": "IN PROGRESS",
+    "cards": [
+        {"text" : "TYPH"}
+    ]},
+    {
+    "id" : 3,  
+    "columnTitle": "DONE",
+    "cards": [
+        {"text" : "DSK"}
+    ]}
+
+
+
+
+]
