@@ -2,19 +2,25 @@
     {"id" : 1,  
     "columnTitle": "TO-DO",
     "cards": [
-        {"text" : "DCOD"}
+        {
+            "text" : "DCOD"
+        }
     ]},
     {   
     "id" : 2,  
     "columnTitle": "IN PROGRESS",
     "cards": [
-        {"text" : "TYPH"}
+        {
+            "text" : "TYPH"
+        }
     ]},
     {
     "id" : 3,  
     "columnTitle": "DONE",
     "cards": [
-        {"text" : "DSK"}
+        {
+            "text" : "DSK"
+        }
     ]}
 
 

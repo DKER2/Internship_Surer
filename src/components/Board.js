@@ -1,23 +1,28 @@
 import { Button } from 'bootstrap';
-import React from 'react';
+import React, { Component } from 'react';
 import { Row } from 'reactstrap';
 import Column from "./Column";
 
-function Board(props) {
-    const Table = (props) => {
-        return (
-            props.columns.map(column => {
-                    return(<Column column = {column}/>)
-                }
-            )
-        );
+class Board extends Component {
+    constructor(props) {
+        super(props);
+        //console.log(props);
     }
-    return(
-        <Row>
-            <Table columns = {props.board}/> 
-        </Row>
-       
-    );
+    
+    
+    render (){
+        const Table = () => this.props.columns.map(column => {
+                return(<Column column = {column}/>)
+            }
+        );
+    
+        return(
+            <Row>
+                <Table/> 
+            </Row>
+        )
+    }
+        
 }
 
 
