@@ -1,15 +1,9 @@
-import Header from './components/Header';
-import Board from './components/Board';
+import Main from './components/Main';
 function App() {
   const columns = require('./data/board.json'); 
   return (
     <div className="App">
-      <div><p></p></div>
-      <Header/>
-      <p></p>
-      <div className='container'>
-        <Board columns = {columns}/>
-      </div>
+      <Main columns = {columns}/>
       
     </div>
   );
