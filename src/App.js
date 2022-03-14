@@ -1,10 +1,13 @@
 import Main from './components/Main';
+import {BOARDS} from './data/board.js';
+import { useSelector, useDispatch } from 'react-redux'
 function App() {
-  const columns = require('./data/board.json'); 
+  //console.log(useSelector((state) => state.BOARDS));
+  //const dispatch = useDispatch();
+  //dispatch({type: 'AddBoard', nameOfNewBoard: 'NEW BOARD'} );
   return (
     <div className="App">
-      <Main columns = {columns}/>
-      
+      <Main/>
     </div>
   );
 }

@@ -1,71 +1,49 @@
-import React, {Component} from 'react';
-import { Form, FormGroup, Label, Input, Container, Button, Row } from 'reactstrap';
-class Headers extends Component{
-    constructor(props){
-        super(props);
-        this.state = {
-            Boards: [{id: 1,
-                            nameOfBoard: "Default Board"}
-                        ],
-            newBoardName: null
-        };
-        this.changeNameOfBoard = this.changeNameOfBoard.bind(this);
-        this.addNewBoard = this.addNewBoard.bind(this);
-        this.updateMessage = this.updateMessage.bind(this);
-    }
-    changeNameOfBoard(e){
-        e.preventDefault();
-        e.target.tagName = "INPUT";
-        //this
-        this.setState({nameOfBoards: ["cac"]})
-    }
-    addNewBoard(){
-        if(this.state.newBoardName==null){
-            
+import React, {Component, useState} from 'react';
+import { Form, FormGroup, Label, Input, Container, Button, Row, ButtonGroup } from 'reactstrap';
+import {useDispatch, useSelector} from 'react-redux';
+function fetchNameOfBoardsFromUI(BOARDS){
+    BOARDS.map(Board => {
+        //console.log(document.getElementById(Board.id).value);
+        return(
+            Board.name = document.getElementById(Board.id).value
+        );
+    })
+    //console.log(BOARDS);
+    return BOARDS;
+}
+function Headers(){
+    const [newBoardName, setNewBoardName] = useState("");
+    const [trigger,setTrigger] = useState(true);
+    const BOARDS = useSelector(state => state.BOARDS);
+    const dispatch = useDispatch();
+    //console.log(this.state.newBoardName);
+    const ButtonList = () => BOARDS.map(Board => {
+        if(Board.changeable==="No"){
+            return(<Input type="button" id={Board.id} className = "btn-info" value={Board.name} onClick={(e) => {dispatch({type:"EnableChangingNameOfBoard", nameOfBoard: e.target.value});setTrigger(!trigger)}}></Input>);
         }
         else{
-            var newBoards = this.state.Boards;
-            var nameOfBoard = this.state.newBoardName;
-            var id = newBoards.length + 1;
-            var flag = true;
-            for(var i = 0; i < this.state.Boards.length; i++){
-                if(this.state.Boards[i].nameOfBoard===nameOfBoard){
-                    flag = false;
-                    alert("Name " + nameOfBoard +" have been used");
-                }
-            }
-            if(flag){
-                this.state.Boards.push({id : id, nameOfBoard: nameOfBoard});
-                this.setState({Boards : newBoards})
-            }
-            
+            return(<Input type="textarea" id={Board.id} defaultValue={Board.name} ></Input>);
         }
-        console.log(this.state.newBoardName);
-    }
-    updateMessage(e){
-        console.log(this.state.Boards);
-        this.setState({
-            newBoardName: e.target.value,
-        })
-    }
-    render(){
-        console.log(this.state.newBoardName);
-        const ButtonList = () => this.state.Boards.map(Board => {return(
-            <Button className = "btn-info" onClick={e => this.changeNameOfBoard(e)} id = {Board.id}>{Board.nameOfBoard}</Button>
-        )});
-        return(
-            <Container>
-                
+        
+    });
+
+
+    return(
+        <Container>
+            <ButtonGroup>
                 <ButtonList/>
-                <div className = "input-group">
-                    <Button className = "btn-info" onClick={() => this.addNewBoard()}>Add</Button>
-                    <Input type="text" placeholder='Name Of New Board' onChange={(e) => this.updateMessage(e)} value={this.state.newBoardName}></Input>
-                </div>
-                
-            </Container>
+            </ButtonGroup>
             
-        )
-    }
+            <div className = "input-group">
+                <Button className = "btn-info" onClick={() => dispatch({type:"AddBoard", nameOfBoard: newBoardName})}>Add</Button>
+                <Input type="text" placeholder='Name Of New Board' onChange={(e) => {setNewBoardName(e.target.value);dispatch({type:"UpdateBOARDS", BOARDS: fetchNameOfBoardsFromUI(BOARDS)}) }} value={newBoardName}></Input>
+                
+            </div>
+            
+        </Container>
+        
+    )
+    
 }
 
 export default Headers

@@ -12,10 +12,9 @@ class Main extends Component{
                 <Header/>
                 <p></p>
                 <div className='container'>
-                    <Board columns = {this.props.columns}/>
+                    <Board/>
                 </div>
             </div>
-            
         );
     }
 }

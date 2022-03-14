@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Card, CardText, CardBody,
-     Button, CardHeader } from 'reactstrap';
+     Button, CardHeader, Input } from 'reactstrap';
 
 
 class Column extends Component{
@@ -10,27 +10,99 @@ class Column extends Component{
             cards: this.props.column.cards,
         };
         this.addCard = this.addCard.bind(this);
+        // this.changeCardText = this.changeCardText.bind(this);
+        this.changeCardState = this.changeCardState.bind(this);
+        this.setToChangeable = this.setToChangeable.bind(this);
     }
     // function addCard(){
     //     props.column.cards.push({text : "TYPH"});
     //     console.log(props.column.cards);
     // }
     addCard(){
-        var newState = this.state.cards;
-        newState.push({"text" : "TYPH"});
-        this.setState({cards: newState})
+        var newCards = this.state.cards;
+        var length = newCards.length;   
+        var id = newCards[length-1].id + 0.1;
+        newCards.map(card => {
+            console.log(document.getElementById(card.id).value)
+            return(
+                card.text = document.getElementById(card.id).value
+            );
+        })
+        
+        newCards.push({"id" : id, "text" : null, "changeable": "Yes"});
+        this.setState({cards: newCards})
     }
+
+
+
+
+    // changeCardText(e){
+    //     //console.log(e.key);
+    //     // console.log(this.state.cards);
+    //     // console.log(e.target.id);
+    //     // var cards = this.state.cards;
+    //     // cards.map(card => {
+    //     //     //console.log(card.id + "DM" + e.target.id);
+    //     //     if(card.id==e.target.id){
+    //     //         card.text = e.target.value;
+    //     //     }
+    //     // })
+    //     // this.setState({cards : cards});
+    // }
+    changeCardState(e){
+        if(e.key === "Enter"){
+            var cards = this.state.cards;
+            cards.map(card => {
+                //console.log(e.target.value)
+                if(card.id==e.target.id){
+                    card.text = e.target.value;
+                    card.changeable = "No";
+                }
+            })
+            this.setState({cards : cards});
+        }
+    }
+
+
+
+
+    setToChangeable(e){
+        var cards = this.state.cards;
+        cards.map(card => {
+            //console.log(card.id + "DM" + e.target.id);
+            if(card.id==e.target.id){
+                card.changeable = "Yes";
+            }
+        })
+        this.setState({cards : cards});
+    }
+
+
+
     render(){
         const CardList = () => this.state.cards.map(card => {
-                    return(
-                        <Card>
-                            <CardBody>
-                                <CardText>
-                                    {card.text}
-                                </CardText>
-                            </CardBody>
-                        </Card>
-                    );
+                    if(card.changeable=="No"){
+                        return(
+                            <div>
+                                <Input type="button" id={card.id} value={card.text} onClick={e => this.setToChangeable(e)}></Input>
+                                <p></p>
+                            </div>
+                                    
+                        );
+                    }
+
+
+
+                    else{
+                        return(
+                            <div>
+                                <Input type="textarea" id={card.id} defaultValue={card.text} onKeyDown={e => this.changeCardState(e)}></Input>
+                                <p></p>
+                            </div>
+                                    
+                        );
+                    }
+                    
                 })
         
         return(
@@ -43,7 +115,7 @@ class Column extends Component{
                         <CardList />
                         <p></p>
                         <Button className = "btn-success" onClick={() => {this.addCard()}}>+ Add a card</Button>
-    
+                        
                     </CardBody>
                 </Card>
             </div>
