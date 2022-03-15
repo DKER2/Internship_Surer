@@ -20,7 +20,7 @@ export const Reducer = (state, action) => {
                     return state;
                 }
             }
-            var id = "Board" + (newBoards.length + 1).toString();
+            let id = "Board" + (newBoards.length + 1).toString();
             //console.log(state.BOARDS);
             if(flag){
 
@@ -108,6 +108,107 @@ export const Reducer = (state, action) => {
                 BOARDS: Boards
             }
         }
+
+
+        case "EnableChangingNameOfCard":{
+            let id = action.id;
+            let num1 = 0;
+            let idOfColumn = "Column";
+            let flag = true;
+            for(let i = 1;i < id.length;i++){
+                if(!isNaN(id[i-1])&&isNaN(id[i])){
+                    break;
+                }
+                if(!isNaN(id[i])&&flag){
+                    num1 = num1*10 + parseInt(id[i]);
+                }
+            }
+            idOfColumn = "Column" + num1.toString();
+            var Boards = state.BOARDS;
+            Boards.map(Board => {
+                if(Board.display === "Yes"){
+                    Board.columns.map(column => {
+                        if(column.id === idOfColumn){
+                            column.cards.map(card => {
+                                if(card.id === id){
+                                    card.changeable = "Yes";
+                                }
+                            })
+                        }
+                    })
+                }
+            });
+            console.log(Boards);
+            return{
+                ...state,
+                BOARDS: Boards
+            }
+        }
+
+        case "DisableChangingNameOfCard":{
+            let id = action.id;
+            let num1 = 0;
+            let idOfColumn = "Column";
+            let flag = true;
+            for(let i = 1;i < id.length;i++){
+                if(!isNaN(id[i-1])&&isNaN(id[i])){
+                    break;
+                }
+                if(!isNaN(id[i])&&flag){
+                    num1 = num1*10 + parseInt(id[i]);
+                }
+            }
+            idOfColumn = "Column" + num1.toString();
+            var Boards = state.BOARDS;
+            Boards.map(Board => {
+                if(Board.display === "Yes"){
+                    Board.columns.map(column => {
+                        if(column.id === idOfColumn){
+                            column.cards.map(card => {
+                                if(card.id === id){
+                                    card.changeable = "No";
+                                }
+                            })
+                        }
+                    })
+                }
+            });
+            console.log(Boards);
+            return{
+                ...state,
+                BOARDS: Boards
+            }
+        }
+            
+
+
+
+        case "AddCard":{
+            var Boards = state.BOARDS;
+            Boards.map(Board => {
+                if(Board.display === "Yes"){
+                    Board.columns.map(column => {
+                        if(column.id === action.idOfColumn){
+                            let length = column.cards.length + 1;
+                            let id = action.idOfColumn + "Card" + length;
+                            column.cards.push(
+                                {
+                                    id : id,
+                                    text : "",
+                                    changeable: "Yes"
+                                }
+                            )
+                        }
+                    })
+                }
+            });
+            console.log(Boards);
+            return{
+                ...state,
+                BOARDS: Boards
+            }
+        }
+
 
 
 
