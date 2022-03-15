@@ -21,7 +21,7 @@ export const Reducer = (state, action) => {
                 }
             }
             var id = "Board" + (newBoards.length + 1).toString();
-            console.log(state.BOARDS);
+            //console.log(state.BOARDS);
             if(flag){
 
                 return{
@@ -80,7 +80,7 @@ export const Reducer = (state, action) => {
         case "EnableChangingNameOfBoard": {
             var Boards = state.BOARDS;
             Boards.map(Board => {
-                if(Board.name === action.nameOfBoard){
+                if(Board.name === action.name){
                     Board.changeable = "Yes";
                 }
             });
@@ -93,13 +93,53 @@ export const Reducer = (state, action) => {
             }
 
         }
+        case "DisableChangingNameOfBoard":{
+            var Boards = state.BOARDS;
+            Boards.map(Board => {
+                if(Board.name === action.name){
+                    Board.changeable = "No";
+                }
+            });
+            // console.log(action.nameOfBoard);
+            // console.log(Boards);
+            //console.log(state.BOARDS);
+            return{
+                ...state,
+                BOARDS: Boards
+            }
+        }
 
-        case "UpdateBOARDS":
-            console.log(action.BOARDS);
+
+
+
+
+        case "UpdateBOARDS":{
+            //console.log(action.BOARDS);
             return{
                 ...state,
                 BOARDS: action.BOARDS
             }
+        }
+
+
+
+
+        case "SetDisplay":{
+            let BOARDS = state.BOARDS;
+            BOARDS.map(Board => {
+                if(Board.name===action.name){
+                    Board.display = "Yes";
+                }
+                else{
+                    Board.display = "No";
+                }
+            });
+            console.log("DM");
+            return{
+                ...state,
+                BOARDS: BOARDS
+            }
+        }
 
 
         default:
