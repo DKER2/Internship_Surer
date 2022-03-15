@@ -12,38 +12,39 @@ function fetchNameOfBoardsFromUI(BOARDS){
     //console.log(BOARDS);
     return BOARDS;
 }
-const mapDispatchToProps = (dispatch) => {
-    return {
-      // dispatching plain actions
-      EnableChangingNameOfBoard: (name) => dispatch({type:"EnableChangingNameOfBoard", name: name }),
-      SetDisplay: (name) => dispatch({type:"SetDisplay", name: name }),
-    }
-}
-let timer = 0;
-let  delay = 200;
-let   prevent = false;
+// const mapDispatchToProps = (dispatch) => {
+//     return {
+//       // dispatching plain actions
+//       EnableChangingNameOfBoard: (name) => dispatch({type:"EnableChangingNameOfBoard", name: name }),
+//       SetDisplay: (name) => dispatch({type:"SetDisplay", name: name }),
+//     }
+// }
+// let timer = 0;
+// let  delay = 200;
+// let   prevent = false;
 
-function onSingleClickHandler(e,dispatch) {
-    timer = setTimeout(() => {
-        if (!prevent) {
-            console.log(e);
-            dispatch({type:"EnableChangingNameOfBoard", name: e.target.value});
-        }
-    }, delay);
-};
-function onDoubleClickHandler(e,dispatch) {
-    clearTimeout(timer);
-    prevent = true;
-    dispatch({type:"SetDisplay", name: e.target.value});
-    setTimeout(() => {
-        prevent = false;
-    }, delay);
-};
+// function onSingleClickHandler(e,dispatch) {
+//     timer = setTimeout(() => {
+//         if (!prevent) {
+//             console.log(e);
+//             dispatch({type:"EnableChangingNameOfBoard", name: e.target.value});
+//         }
+//     }, delay);
+// };
+// function onDoubleClickHandler(e,dispatch) {
+//     clearTimeout(timer);
+//     prevent = true;
+//     dispatch({type:"SetDisplay", name: e.target.value});
+//     setTimeout(() => {
+//         prevent = false;
+//     }, delay);
+// };
 let clickTimeout = null;
 function handleClicksButtonList(e,dispatch,trigger,setTrigger) {
     if (clickTimeout !== null) {
         dispatch({type:"SetDisplay", name: e.target.value});
         dispatch({type:"DisableChangingNameOfBoard", name: e.target.value}); 
+        setTrigger(!trigger);
         clearTimeout(clickTimeout)
         clickTimeout = null
     } else {
@@ -63,6 +64,9 @@ function Headers(){
     //console.log(this.state.newBoardName);
     const ButtonList = () => BOARDS.map(Board => {
         if(Board.changeable==="No"){
+            if(Board.display==="Yes"){
+                return(<Input type="button" id={Board.id} className = "btn-warning" value={Board.name} onClick={e => {handleClicksButtonList(e,dispatch,trigger,setTrigger);}}></Input>);
+            }
             return(<Input type="button" id={Board.id} className = "btn-info" value={Board.name} onClick={e => {handleClicksButtonList(e,dispatch,trigger,setTrigger);}}></Input>);
         }
         else{

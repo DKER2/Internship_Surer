@@ -14,10 +14,6 @@ class Column extends Component{
         this.changeCardState = this.changeCardState.bind(this);
         this.setToChangeable = this.setToChangeable.bind(this);
     }
-    // function addCard(){
-    //     props.column.cards.push({text : "TYPH"});
-    //     console.log(props.column.cards);
-    // }
     addCard(){
         var newCards = this.state.cards;
         var length = newCards.length;   
@@ -106,7 +102,7 @@ class Column extends Component{
                 })
         
         return(
-            <div className = "col-3">
+            <div className = "col-12 col-md-3">
                 <Card>
                     <CardHeader>{this.props.column.columnTitle}</CardHeader>
                     <CardBody>

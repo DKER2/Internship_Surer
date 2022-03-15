@@ -7,6 +7,7 @@ import Column from "./Column";
 function Board(){
     const BOARDS = useSelector((state) => state.BOARDS);
     const displayedBoard = BOARDS.filter(BOARD => BOARD.display === "Yes");
+    console.log(displayedBoard[0]);
     const Table = () => displayedBoard[0].columns.map(column => {
             return(<Column column = {column}/>)
         }

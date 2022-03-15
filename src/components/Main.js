@@ -1,22 +1,18 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import Header from './Header';
 import Board from './Board';
-class Main extends Component{
-    constructor(props){
-        super(props);
-    }
-    render() {
-        return(
-            <div>
-                <div><p></p></div>
-                <Header/>
-                <p></p>
-                <div className='container'>
-                    <Board/>
-                </div>
+function Main() {
+    const [mainTrigger,setMainTrigger] = useState(false);
+    return(
+        <div>
+            <div><p></p></div>
+            <Header mainTrigger={mainTrigger} setMainTrigger={setMainTrigger}/>
+            <p></p>
+            <div className='container'>
+                <Board/>
             </div>
-        );
-    }
+        </div>
+    );
 }
 
 export default Main;
