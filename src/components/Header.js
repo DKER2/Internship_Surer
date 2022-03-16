@@ -86,7 +86,7 @@ function Headers(props){
             
             <div className = "input-group">
                 <Button className = "btn-info" onClick={() => dispatch({type:"AddBoard", nameOfBoard: newBoardName})}>Add</Button>
-                <Input type="text" placeholder='Name Of New Board' onChange={(e) => {setNewBoardName(e.target.value);dispatch({type:"UpdateBOARDS", BOARDS: fetchNameOfBoardsFromUI(BOARDS)}) }} value={newBoardName}></Input>
+                <Input type="text" placeholder='Name Of New Board' onKeyDown={(e) => {if(e.key==="Enter"){dispatch({type:"AddBoard", nameOfBoard: newBoardName})}}} onChange={(e) => {setNewBoardName(e.target.value);dispatch({type:"UpdateBOARDS", BOARDS: fetchNameOfBoardsFromUI(BOARDS)}) }} value={newBoardName}></Input>
                 
             </div>
             

@@ -189,15 +189,20 @@ export const Reducer = (state, action) => {
                 if(Board.display === "Yes"){
                     Board.columns.map(column => {
                         if(column.id === action.idOfColumn){
-                            let length = column.cards.length + 1;
-                            let id = action.idOfColumn + "Card" + length;
-                            column.cards.push(
-                                {
-                                    id : id,
-                                    text : "",
-                                    changeable: "Yes"
-                                }
-                            )
+                            if(column.cards.length===action.maxCardInColumn){
+                                alert("The Number Of Cards In Column Have Met The LIMITATION: " + action.maxCardInColumn.toString())
+                            }
+                            else{
+                                let length = column.cards.length + 1;
+                                let id = action.idOfColumn + "Card" + length;
+                                column.cards.push(
+                                    {
+                                        id : id,
+                                        text : "",
+                                        changeable: "Yes"
+                                    }
+                                )
+                            }
                         }
                     })
                 }
@@ -212,7 +217,7 @@ export const Reducer = (state, action) => {
 
 
 
-        case "TransferData":
+        case "TransferData":{
             let toId = action.toId;
             let sourceId = action.sourceId;
 
@@ -245,31 +250,142 @@ export const Reducer = (state, action) => {
             idOfSourceColumn = "Column" + num2.toString();
             
 
-            let data;
+            let availabelToTransfer = true;
+            let Boards = state.BOARDS;
+            Boards.map(Board => {
+                if(Board.display==="Yes"){
+                    Board.columns.map(column => {
+                        if(column.id === idOfToColumn){
+                            //console.log(column.length, action.maxCardInColumn);
+                            if(column.cards.length >= action.maxCardInColumn){
+                                availabelToTransfer = false;
+                            }
+                        }
+                    })
+                }
+            });
+            console.log(availabelToTransfer);
+            if(availabelToTransfer){
+                let data;
+                
+                //console.log(BOARDS);
+                Boards.map(Board => {
+                    if(Board.display==="Yes"){
+                        //console.log(Board)
+                        Board.columns.map(column => {
+                            if(column.id === idOfSourceColumn){
+                                //console.log(column);
+                                let i = 0;
+                                let newCards = [];
+                                let flag2 = false;
+                                column.cards.map(card => {
+                                    // console.log(card);
+                                    // console.log(card.id,sourceId);
+                                    i++;
+                                    if(card.id === sourceId){
+                                        data = card;
+                                        flag2 = true;
+                                    }
+                                    else if(flag2 === false){
+                                        newCards.push(card);
+                                    }
+                                    else if(flag2 === true){
+                                        card.id = idOfSourceColumn + "Card" + (i-1).toString();
+                                        newCards.push(card);
+                                    }
+                                })
+                                column.cards = newCards;
+                                console.log(newCards);
+                                
+                            }
+                        })
+                    }
+                });
+                //console.log(Boards);
+                //console.log(data);
+                Boards.map(Board => {
+                    if(Board.display==="Yes"){
+                        let flag3 = false;
+                        Board.columns.map(column => {
+                            if(column.id === idOfToColumn){
+                                let i = 0;
+                                let newCards = [];
+                                let flag2 = false;
+                                column.cards.map(card => {
+                                    i++;
+                                    if(card.id === toId){
+                                        data.id = idOfToColumn + "Card" + (i).toString();
+                                        newCards.push(data);
+                                        card.id = idOfToColumn + "Card" + (i+1).toString();
+                                        newCards.push(card);
+                                        flag3 = true;
+                                        flag2 = true;
+                                    }
+                                    else if(flag2 === false){
+                                        newCards.push(card);
+                                    }
+                                    else if(flag2 === true){
+                                        card.id = idOfToColumn + "Card" + (i+1).toString();
+                                        newCards.push(card);
+                                    }
+                                })
+                                if(flag3===false){
+                                    data.id = idOfToColumn + "Card" + (i+1).toString();
+                                    newCards.push(data);
+                                }
+                                column.cards = newCards;
+                                console.log(newCards);
+                            }
+                        })
+                    }
+                });
+
+                
+                return{
+                    ...state,
+                    BOARDS: Boards
+                }
+            }
+            else{
+                alert("The Number Of Card In Column Have Met The LIMITATION: " + action.maxCardInColumn.toString());
+                return state;
+            }
+        }
+
+        case "DeleteCard": {
+            let id = action.id;
+            let num1 = 0;
+            let idOfColumn = "Column";
+            let flag = true;
+            for(let i = 1;i < id.length;i++){
+                if(!isNaN(id[i-1])&&isNaN(id[i])){
+                    break;
+                }
+                if(!isNaN(id[i])&&flag){
+                    num1 = num1*10 + parseInt(id[i]);
+                }
+            }
+            idOfColumn = "Column" + num1.toString();
             let Boards = state.BOARDS;
             //console.log(BOARDS);
             Boards.map(Board => {
                 if(Board.display==="Yes"){
                     //console.log(Board)
                     Board.columns.map(column => {
-                        if(column.id === idOfSourceColumn){
-                            //console.log(column);
-                            let i = 0;
+                        if(column.id === idOfColumn){
                             let newCards = [];
-                            let flag2 = false;
+                            let flag1 = false;
+                            let i = 0;
                             column.cards.map(card => {
-                                // console.log(card);
-                                // console.log(card.id,sourceId);
                                 i++;
-                                if(card.id === sourceId){
-                                    data = card;
-                                    flag2 = true;
+                                if(card.id === id){
+                                    flag1 = true;
                                 }
-                                else if(flag2 === false){
-                                    newCards.push(card);
+                                else if(flag1===false){
+                                    newCards.push(card)
                                 }
-                                else if(flag2 === true){
-                                    card.id = idOfSourceColumn + "Card" + (i-1).toString();
+                                else{
+                                    card.id = idOfColumn + "Card" + (i-1).toString();
                                     newCards.push(card);
                                 }
                             })
@@ -280,51 +396,11 @@ export const Reducer = (state, action) => {
                     })
                 }
             });
-            //console.log(Boards);
-            //console.log(data);
-            Boards.map(Board => {
-                if(Board.display==="Yes"){
-                    let flag3 = false;
-                    Board.columns.map(column => {
-                        if(column.id === idOfToColumn){
-                            let i = 0;
-                            let newCards = [];
-                            let flag2 = false;
-                            column.cards.map(card => {
-                                i++;
-                                if(card.id === toId){
-                                    data.id = idOfToColumn + "Card" + (i).toString();
-                                    newCards.push(data);
-                                    card.id = idOfToColumn + "Card" + (i+1).toString();
-                                    newCards.push(card);
-                                    flag3 = true;
-                                    flag2 = true;
-                                }
-                                else if(flag2 === false){
-                                    newCards.push(card);
-                                }
-                                else if(flag2 === true){
-                                    card.id = idOfToColumn + "Card" + (i+1).toString();
-                                    newCards.push(card);
-                                }
-                            })
-                            if(flag3===false){
-                                data.id = idOfToColumn + "Card" + (i).toString();
-                                newCards.push(data);
-                            }
-                            column.cards = newCards;
-                            //console.log(newCards);
-                        }
-                    })
-                }
-            });
-
-            
             return{
                 ...state,
                 BOARDS: Boards
             }
-
+        }
 
             
 

@@ -1,7 +1,7 @@
 import React, { Component, useState } from "react";
 import Header from './Header';
 import Board from './Board';
-function Main() {
+function Main(props) {
     const [mainTrigger,setMainTrigger] = useState(false);
     return(
         <div>
@@ -9,7 +9,7 @@ function Main() {
             <Header mainTrigger={mainTrigger} setMainTrigger={setMainTrigger}/>
             <p></p>
             <div className='container'>
-                <Board/>
+                <Board maxCardInColumn={props.maxCardInColumn}/>
             </div>
         </div>
     );

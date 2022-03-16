@@ -1,7 +1,7 @@
 import React, { Component, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Card, CardText, CardBody,
-     Button, CardHeader, Input } from 'reactstrap';
+     Button, CardHeader, Input, InputGroup } from 'reactstrap';
 
 
 
@@ -24,9 +24,9 @@ function fetchNameOfCardsFromUI(BOARDS){
 
 
 
-function addCard(idOfColumn,BOARDS,dispatch){
+function addCard(idOfColumn,BOARDS,maxCardInColumn,dispatch){
     dispatch({type: "UpdateBoard", BOARDS: fetchNameOfCardsFromUI(BOARDS)});
-    dispatch({type: "AddCard", idOfColumn: idOfColumn})
+    dispatch({type: "AddCard", idOfColumn: idOfColumn, maxCardInColumn: maxCardInColumn})
 }
 function changeCardState(e,dispatch,trigger,setTrigger,BOARDS){
     if(e.key === "Enter"){
@@ -53,25 +53,30 @@ function dragEndHandler(e){
     console.log(e.target.id);
 }
 
-function onDrop(e, dispatch){
+function onDrop(e,maxCardInColumn, dispatch){
     let id = e.dataTransfer.getData("id");
     let toId = e.target.id;
     //console.log(id,toId)
-    dispatch({type : "TransferData", sourceId: id, toId: toId})
+    dispatch({type : "TransferData", sourceId: id, toId: toId, maxCardInColumn: maxCardInColumn})
 
+}
+function deleteCard(id,dispatch){
+    dispatch({type: "DeleteCard", id: id});
 }
 function Column(props){
     const [trigger,setTrigger] = useState(false);
     const dispatch = useDispatch();
     const BOARDS = useSelector(state => state.BOARDS);
+    let maxCardInColumn = props.maxCardInColumn;
     const CardList = () => props.column.cards.map((card,index) => {
         if(card.changeable=="No"){
             return(
                 <div>
-
-                    <Input draggable onDragEnd={e => dragEndHandler(e)} onDragOver={e => dragOverHandler(e)} onDragStart={e => dragStartHandler(e,card.id)} type="button" id={card.id} value={card.text} onClick={e => {setToChangeable(e,dispatch); setTrigger(!trigger)}}></Input>
-                       
-                    
+                    <InputGroup >
+                        <Input draggable onDragEnd={e => dragEndHandler(e)} onDragOver={e => dragOverHandler(e)} onDragStart={e => dragStartHandler(e,card.id)} type="button" id={card.id} value={card.text} onClick={e => {setToChangeable(e,dispatch); setTrigger(!trigger)}}></Input>
+                        
+                        <Button onClick={e => {deleteCard(card.id,dispatch); setTrigger(!trigger)}}>X</Button>
+                    </InputGroup>
                     
                     <p></p>
                 </div>
@@ -96,7 +101,7 @@ function Column(props){
         
     return(
         <div className = "col-12 col-md-3">
-            <Card id={props.column.id} className="droppable" onDrop={(e) => {onDrop(e, dispatch); props.setBoardTrigger(!props.boardTrigger)}}>
+            <Card id={props.column.id} className="droppable" onDrop={(e) => {onDrop(e,maxCardInColumn, dispatch); props.setBoardTrigger(!props.boardTrigger)}}>
                 <CardHeader>{props.column.columnTitle}</CardHeader>
                 <CardBody>
                     
@@ -105,7 +110,7 @@ function Column(props){
                     </div>
 
                     <p></p>
-                    <Button className = "btn-success" onClick={() => {addCard(props.column.id,BOARDS,dispatch); setTrigger(!trigger)}}>+ Add a card</Button>
+                    <Button className = "btn-success" onClick={() => {addCard(props.column.id,BOARDS,maxCardInColumn,dispatch); setTrigger(!trigger)}}>+ Add a card</Button>
                     
                 </CardBody>
             </Card>
