@@ -59,7 +59,19 @@
 * Step 1: Drag the card 
 * Step 2: Move the place you want to let it down in other columns or in the same column 
 * Step 3: Drop the Card 
-
+### 1.5 &nbsp; Set Maximum number of Card in a Column
+* Step 1: Move to the folder containing the clone repository
+* Step 2: Open "src" folder
+* Step 3: Open App.js 
+* Step 4: Change the variable "maxCardInColumn" to the maximum number of Card in Column you wanted
+    ```
+    const maxCardInColumn = 5;
+    ``` 
+## 3. Use in another React Project
+* Step 1: Setup Maximum number of Card in a Column
+* Step 2: Download Dependencies
+* Step 3: Import "App" function from "App.js"
+ 
 
 
 
