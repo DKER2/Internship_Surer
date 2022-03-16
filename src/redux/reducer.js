@@ -78,7 +78,7 @@ export const Reducer = (state, action) => {
 
 
         case "EnableChangingNameOfBoard": {
-            var Boards = state.BOARDS;
+            let Boards = state.BOARDS;
             Boards.map(Board => {
                 if(Board.name === action.name){
                     Board.changeable = "Yes";
@@ -86,7 +86,7 @@ export const Reducer = (state, action) => {
             });
             // console.log(action.nameOfBoard);
             // console.log(Boards);
-            console.log(state.BOARDS);
+            //console.log(state.BOARDS);
             return{
                 ...state,
                 BOARDS: Boards
@@ -94,7 +94,7 @@ export const Reducer = (state, action) => {
 
         }
         case "DisableChangingNameOfBoard":{
-            var Boards = state.BOARDS;
+            let Boards = state.BOARDS;
             Boards.map(Board => {
                 if(Board.name === action.name){
                     Board.changeable = "No";
@@ -124,7 +124,7 @@ export const Reducer = (state, action) => {
                 }
             }
             idOfColumn = "Column" + num1.toString();
-            var Boards = state.BOARDS;
+            let Boards = state.BOARDS;
             Boards.map(Board => {
                 if(Board.display === "Yes"){
                     Board.columns.map(column => {
@@ -138,7 +138,7 @@ export const Reducer = (state, action) => {
                     })
                 }
             });
-            console.log(Boards);
+            //console.log(Boards);
             return{
                 ...state,
                 BOARDS: Boards
@@ -159,7 +159,7 @@ export const Reducer = (state, action) => {
                 }
             }
             idOfColumn = "Column" + num1.toString();
-            var Boards = state.BOARDS;
+            let Boards = state.BOARDS;
             Boards.map(Board => {
                 if(Board.display === "Yes"){
                     Board.columns.map(column => {
@@ -173,7 +173,7 @@ export const Reducer = (state, action) => {
                     })
                 }
             });
-            console.log(Boards);
+            //console.log(Boards);
             return{
                 ...state,
                 BOARDS: Boards
@@ -184,7 +184,7 @@ export const Reducer = (state, action) => {
 
 
         case "AddCard":{
-            var Boards = state.BOARDS;
+            let Boards = state.BOARDS;
             Boards.map(Board => {
                 if(Board.display === "Yes"){
                     Board.columns.map(column => {
@@ -202,7 +202,7 @@ export const Reducer = (state, action) => {
                     })
                 }
             });
-            console.log(Boards);
+            //console.log(Boards);
             return{
                 ...state,
                 BOARDS: Boards
@@ -212,6 +212,121 @@ export const Reducer = (state, action) => {
 
 
 
+        case "TransferData":
+            let toId = action.toId;
+            let sourceId = action.sourceId;
+
+            console.log(toId,sourceId);
+            let num1 = 0;
+            let idOfToColumn = "Column";
+            let flag = true;
+            for(let i = 1;i < toId.length;i++){
+                if(!isNaN(toId[i-1])&&isNaN(toId[i])){
+                    break;
+                }
+                if(!isNaN(toId[i])&&flag){
+                    num1 = num1*10 + parseInt(toId[i]);
+                }
+            }
+            idOfToColumn = "Column" + num1.toString();
+
+
+            let num2 = 0;
+            let idOfSourceColumn = "Column";
+            let flag1 = true;
+            for(let i = 1;i < sourceId.length;i++){
+                if(!isNaN(sourceId[i-1])&&isNaN(sourceId[i])){
+                    break;
+                }
+                if(!isNaN(sourceId[i])&&flag1){
+                    num2 = num2*10 + parseInt(sourceId[i]);
+                }
+            }
+            idOfSourceColumn = "Column" + num2.toString();
+            
+
+            let data;
+            let Boards = state.BOARDS;
+            //console.log(BOARDS);
+            Boards.map(Board => {
+                if(Board.display==="Yes"){
+                    //console.log(Board)
+                    Board.columns.map(column => {
+                        if(column.id === idOfSourceColumn){
+                            //console.log(column);
+                            let i = 0;
+                            let newCards = [];
+                            let flag2 = false;
+                            column.cards.map(card => {
+                                // console.log(card);
+                                // console.log(card.id,sourceId);
+                                i++;
+                                if(card.id === sourceId){
+                                    data = card;
+                                    flag2 = true;
+                                }
+                                else if(flag2 === false){
+                                    newCards.push(card);
+                                }
+                                else if(flag2 === true){
+                                    card.id = idOfSourceColumn + "Card" + (i-1).toString();
+                                    newCards.push(card);
+                                }
+                            })
+                            column.cards = newCards;
+                            console.log(newCards);
+                            
+                        }
+                    })
+                }
+            });
+            //console.log(Boards);
+            //console.log(data);
+            Boards.map(Board => {
+                if(Board.display==="Yes"){
+                    let flag3 = false;
+                    Board.columns.map(column => {
+                        if(column.id === idOfToColumn){
+                            let i = 0;
+                            let newCards = [];
+                            let flag2 = false;
+                            column.cards.map(card => {
+                                i++;
+                                if(card.id === toId){
+                                    data.id = idOfToColumn + "Card" + (i).toString();
+                                    newCards.push(data);
+                                    card.id = idOfToColumn + "Card" + (i+1).toString();
+                                    newCards.push(card);
+                                    flag3 = true;
+                                    flag2 = true;
+                                }
+                                else if(flag2 === false){
+                                    newCards.push(card);
+                                }
+                                else if(flag2 === true){
+                                    card.id = idOfToColumn + "Card" + (i+1).toString();
+                                    newCards.push(card);
+                                }
+                            })
+                            if(flag3===false){
+                                data.id = idOfToColumn + "Card" + (i).toString();
+                                newCards.push(data);
+                            }
+                            column.cards = newCards;
+                            //console.log(newCards);
+                        }
+                    })
+                }
+            });
+
+            
+            return{
+                ...state,
+                BOARDS: Boards
+            }
+
+
+            
 
 
         case "UpdateBOARDS":{
@@ -226,8 +341,8 @@ export const Reducer = (state, action) => {
 
 
         case "SetDisplay":{
-            let BOARDS = state.BOARDS;
-            BOARDS.map(Board => {
+            let Boards = state.BOARDS;
+            Boards.map(Board => {
                 if(Board.name===action.name){
                     Board.display = "Yes";
                 }
@@ -235,10 +350,10 @@ export const Reducer = (state, action) => {
                     Board.display = "No";
                 }
             });
-            console.log("DM");
+            //console.log("DM");
             return{
                 ...state,
-                BOARDS: BOARDS
+                BOARDS: Boards
             }
         }
 
