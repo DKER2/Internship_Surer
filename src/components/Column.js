@@ -102,7 +102,7 @@ function Column(props){
         
         
     return(
-        <div className = "col-12 col-md-3 droppable"  id={props.column.id} onDragOver={e => dragOverHandler(e)} onDrop={(e) => {onDrop(e,maxCardInColumn, dispatch); props.setBoardTrigger(!props.boardTrigger)}}>
+        <div className = "col-12 col-md-4 droppable"  id={props.column.id} onDragOver={e => dragOverHandler(e)} onDrop={(e) => {onDrop(e,maxCardInColumn, dispatch); props.setBoardTrigger(!props.boardTrigger)}}>
             <Card id={props.column.id}>
                 <CardHeader  id={props.column.id}>{props.column.columnTitle}</CardHeader>
                 <CardBody  id={props.column.id}>
