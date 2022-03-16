@@ -1,6 +1,4 @@
 import Main from './components/Main';
-import {BOARDS} from './data/board.js';
-import { useSelector, useDispatch } from 'react-redux'
 function App() {
   //console.log(useSelector((state) => state.BOARDS));
   //const dispatch = useDispatch();

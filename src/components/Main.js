@@ -1,4 +1,4 @@
-import React, { Component, useState } from "react";
+import React, { useState } from "react";
 import Header from './Header';
 import Board from './Board';
 function Main(props) {

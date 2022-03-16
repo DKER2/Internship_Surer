@@ -21,7 +21,6 @@ export const Reducer = (state, action) => {
                 }
             }
             let id = "Board" + (newBoards.length + 1).toString();
-            //console.log(state.BOARDS);
             if(flag){
 
                 return{
@@ -84,9 +83,6 @@ export const Reducer = (state, action) => {
                     Board.changeable = "Yes";
                 }
             });
-            // console.log(action.nameOfBoard);
-            // console.log(Boards);
-            //console.log(state.BOARDS);
             return{
                 ...state,
                 BOARDS: Boards
@@ -100,9 +96,6 @@ export const Reducer = (state, action) => {
                     Board.changeable = "No";
                 }
             });
-            // console.log(action.nameOfBoard);
-            // console.log(Boards);
-            //console.log(state.BOARDS);
             return{
                 ...state,
                 BOARDS: Boards
@@ -138,7 +131,6 @@ export const Reducer = (state, action) => {
                     })
                 }
             });
-            //console.log(Boards);
             return{
                 ...state,
                 BOARDS: Boards
@@ -173,7 +165,6 @@ export const Reducer = (state, action) => {
                     })
                 }
             });
-            //console.log(Boards);
             return{
                 ...state,
                 BOARDS: Boards
@@ -207,7 +198,6 @@ export const Reducer = (state, action) => {
                     })
                 }
             });
-            //console.log(Boards);
             return{
                 ...state,
                 BOARDS: Boards
@@ -220,8 +210,6 @@ export const Reducer = (state, action) => {
         case "TransferData":{
             let toId = action.toId;
             let sourceId = action.sourceId;
-
-            console.log(toId,sourceId);
             let num1 = 0;
             let idOfToColumn = "Column";
             let flag = true;
@@ -256,7 +244,6 @@ export const Reducer = (state, action) => {
                 if(Board.display==="Yes"){
                     Board.columns.map(column => {
                         if(column.id === idOfToColumn){
-                            //console.log(column.length, action.maxCardInColumn);
                             if(column.cards.length >= action.maxCardInColumn){
                                 availabelToTransfer = false;
                             }
@@ -264,23 +251,16 @@ export const Reducer = (state, action) => {
                     })
                 }
             });
-            console.log(availabelToTransfer);
             if(availabelToTransfer){
                 let data;
-                
-                //console.log(BOARDS);
                 Boards.map(Board => {
                     if(Board.display==="Yes"){
-                        //console.log(Board)
                         Board.columns.map(column => {
                             if(column.id === idOfSourceColumn){
-                                //console.log(column);
                                 let i = 0;
                                 let newCards = [];
                                 let flag2 = false;
                                 column.cards.map(card => {
-                                    // console.log(card);
-                                    // console.log(card.id,sourceId);
                                     i++;
                                     if(card.id === sourceId){
                                         data = card;
@@ -295,14 +275,11 @@ export const Reducer = (state, action) => {
                                     }
                                 })
                                 column.cards = newCards;
-                                console.log(newCards);
                                 
                             }
                         })
                     }
                 });
-                //console.log(Boards);
-                //console.log(data);
                 Boards.map(Board => {
                     if(Board.display==="Yes"){
                         let flag3 = false;
@@ -334,7 +311,6 @@ export const Reducer = (state, action) => {
                                     newCards.push(data);
                                 }
                                 column.cards = newCards;
-                                console.log(newCards);
                             }
                         })
                     }
@@ -367,10 +343,8 @@ export const Reducer = (state, action) => {
             }
             idOfColumn = "Column" + num1.toString();
             let Boards = state.BOARDS;
-            //console.log(BOARDS);
             Boards.map(Board => {
                 if(Board.display==="Yes"){
-                    //console.log(Board)
                     Board.columns.map(column => {
                         if(column.id === idOfColumn){
                             let newCards = [];
@@ -390,7 +364,6 @@ export const Reducer = (state, action) => {
                                 }
                             })
                             column.cards = newCards;
-                            console.log(newCards);
                             
                         }
                     })
@@ -406,7 +379,6 @@ export const Reducer = (state, action) => {
 
 
         case "UpdateBOARDS":{
-            //console.log(action.BOARDS);
             return{
                 ...state,
                 BOARDS: action.BOARDS
@@ -426,7 +398,6 @@ export const Reducer = (state, action) => {
                     Board.display = "No";
                 }
             });
-            //console.log("DM");
             return{
                 ...state,
                 BOARDS: Boards
