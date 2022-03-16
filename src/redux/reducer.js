@@ -387,6 +387,18 @@ export const Reducer = (state, action) => {
 
 
 
+        case "SaveNameOfBoard":{
+            let Boards = state.BOARDS;
+            Boards.map(Board => {
+                Board.changeable = "No";
+            });
+            console.log(Boards);
+            return{
+                ...state,
+                BOARDS: Boards
+            }
+        }
+
 
         case "SetDisplay":{
             let Boards = state.BOARDS;

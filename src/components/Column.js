@@ -89,7 +89,7 @@ function Column(props){
             return(
                 <div>
                     <InputGroup >
-                        <Input type="textarea" id={card.id} defaultValue={card.text}  onKeyDown={e => {changeCardState(e,dispatch,trigger,setTrigger,BOARDS)}} ></Input>
+                        <Input draggable onDragEnd={e => dragEndHandler(e)} onDragStart={e => dragStartHandler(e,card.id)} type="textarea" id={card.id} defaultValue={card.text}  onKeyDown={e => {changeCardState(e,dispatch,trigger,setTrigger,BOARDS)}} ></Input>
                         <Button onClick={e => {deleteCard(card.id,dispatch); setTrigger(!trigger)}}>X</Button>
                     </InputGroup>
                     <p></p>
