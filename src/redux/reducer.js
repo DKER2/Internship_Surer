@@ -392,7 +392,6 @@ export const Reducer = (state, action) => {
             Boards.map(Board => {
                 Board.changeable = "No";
             });
-            console.log(Boards);
             return{
                 ...state,
                 BOARDS: Boards

@@ -8,7 +8,7 @@ import { Card, CardBody,
 
 function fetchNameOfCardsFromUI(BOARDS){
     BOARDS.map(Board => {
-        //console.log(document.getElementById(Board.id).value);
+        
         if(Board.display === "Yes"){
             Board.columns.map(column => {
                 column.cards.map(card => {
@@ -17,7 +17,7 @@ function fetchNameOfCardsFromUI(BOARDS){
             })
         }
     })
-    //console.log(BOARDS);
+
     return BOARDS;
 }
 
@@ -42,7 +42,7 @@ function setToChangeable(e,dispatch){
 
 function dragOverHandler(e){
     e.preventDefault();
-    console.log(e.target.id);
+
 }
 
 function dragStartHandler(e,id){
@@ -50,7 +50,7 @@ function dragStartHandler(e,id){
 }
 
 function dragEndHandler(e){
-    console.log(e.target.id);
+
 }
 
 function onDrop(e,maxCardInColumn, dispatch){
